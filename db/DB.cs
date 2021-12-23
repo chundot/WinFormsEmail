@@ -8,7 +8,13 @@ namespace wfemail
 {
     public class DB
     {
-        public static SqlSugarClient newClient()
+        public SqlSugarClient db;
+        public SimpleClient<Account> acnt { get { return new SimpleClient<Account>(db); } }
+        public DB()
+        {
+            db = newClient();
+        }
+        public SqlSugarClient newClient()
         {
             string db = string.Format("{0}\\.mailc\\mail.db", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
             if (!File.Exists(db))
@@ -19,10 +25,6 @@ namespace wfemail
                 DbType = DbType.Sqlite,
                 IsAutoCloseConnection = true
             });
-        }
-        public static List<Account> getAccounts()
-        {
-            return newClient().Queryable<Account>().ToList();
         }
     }
 }
