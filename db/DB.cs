@@ -9,10 +9,11 @@ namespace wfemail
     public class DB
     {
         public SqlSugarClient db;
-        public SimpleClient<Account> acnt { get { return new SimpleClient<Account>(db); } }
+        public SimpleClient<Account> acnt;
         public DB()
         {
             db = newClient();
+            acnt = new SimpleClient<Account>(db);
         }
         public SqlSugarClient newClient()
         {
