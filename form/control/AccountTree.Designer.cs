@@ -80,6 +80,7 @@ namespace wfemail.form.control
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(23, 22);
             this.addBtn.Text = "添加邮箱账户";
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
             // 
             // editBtn
             // 
@@ -89,6 +90,7 @@ namespace wfemail.form.control
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(23, 22);
             this.editBtn.Text = "编辑账户信息";
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // delBtn
             // 
@@ -98,6 +100,7 @@ namespace wfemail.form.control
             this.delBtn.Name = "delBtn";
             this.delBtn.Size = new System.Drawing.Size(23, 22);
             this.delBtn.Text = "删除账户";
+            this.delBtn.Click += new System.EventHandler(this.delBtn_Click);
             // 
             // tree
             // 
@@ -120,6 +123,13 @@ namespace wfemail.form.control
             this.imgList.Images.SetKeyName(0, "info");
             this.imgList.Images.SetKeyName(1, "mail");
             this.imgList.Images.SetKeyName(2, "mailplus");
+            this.imgList.Images.SetKeyName(3, "inboxdoc");
+            this.imgList.Images.SetKeyName(4, "deleted");
+            this.imgList.Images.SetKeyName(5, "junk");
+            this.imgList.Images.SetKeyName(6, "question");
+            this.imgList.Images.SetKeyName(7, "draft");
+            this.imgList.Images.SetKeyName(8, "sent");
+            this.imgList.Images.SetKeyName(9, "inbox");
             // 
             // AccountTree
             // 

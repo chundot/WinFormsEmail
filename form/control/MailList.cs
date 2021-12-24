@@ -16,5 +16,9 @@ namespace wfemail.form.control
             InitializeComponent();
             list = listMail;
         }
+        public void L(string status)
+        {
+            label1.Text = status;
+        }
     }
 }

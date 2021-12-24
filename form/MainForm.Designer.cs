@@ -32,14 +32,14 @@ namespace wfemail.form
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeAccount = new wfemail.form.control.AccountTree();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.listMail = new wfemail.form.control.MailList();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +58,7 @@ namespace wfemail.form
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl);
             this.splitContainer1.Panel2.Cursor = System.Windows.Forms.Cursors.Default;
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 224;
@@ -72,16 +72,17 @@ namespace wfemail.form
             this.treeAccount.Size = new System.Drawing.Size(221, 442);
             this.treeAccount.TabIndex = 0;
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabMain);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(572, 450);
-            this.tabControl1.TabIndex = 0;
+            this.tabControl.Controls.Add(this.tabMain);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(572, 450);
+            this.tabControl.TabIndex = 0;
+            this.tabControl.DoubleClick += new System.EventHandler(this.tabControl_DoubleClick);
             // 
             // tabMain
             // 
@@ -116,7 +117,7 @@ namespace wfemail.form
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -125,7 +126,7 @@ namespace wfemail.form
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabMain;
         private control.MailList listMail;
         private control.AccountTree treeAccount;

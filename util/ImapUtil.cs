@@ -45,7 +45,7 @@ namespace wfemail.util
             // 产生新imap实例
             imap = new Imap();
             imap.state = ImapState.Waiting;
-            imap.a_id = a.a_id;
+            imap.a_id = a.a_id ?? 0;
             imap.client = new ImapClient();
             await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
             await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
@@ -83,6 +83,30 @@ namespace wfemail.util
 
                 default:
                     return str;
+            }
+        }
+
+        public static string getIconName(string str)
+        {
+            switch (str)
+            {
+                case "INBOX":
+                    return "inboxdoc";
+
+                case "Sent Messages":
+                    return "sent";
+
+                case "Drafts":
+                    return "draft";
+
+                case "Junk":
+                    return "junk";
+
+                case "Deleted Messages":
+                    return "deleted";
+
+                default:
+                    return "inbox";
             }
         }
 

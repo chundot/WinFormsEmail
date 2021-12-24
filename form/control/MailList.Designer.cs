@@ -30,7 +30,7 @@ namespace wfemail.form.control
         private void InitializeComponent()
         {
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.label1 = new System.Windows.Forms.ToolStripLabel();
             this.listMail = new System.Windows.Forms.ListView();
             this.colSub = new System.Windows.Forms.ColumnHeader();
             this.colDate = new System.Windows.Forms.ColumnHeader();
@@ -41,18 +41,18 @@ namespace wfemail.form.control
             // 
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1});
+            this.label1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 319);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(471, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripLabel1
+            // label1
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(56, 22);
-            this.toolStripLabel1.Text = "邮件列表";
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 22);
+            this.label1.Text = "邮件列表";
             // 
             // listMail
             // 
@@ -77,7 +77,7 @@ namespace wfemail.form.control
             // colDate
             // 
             this.colDate.Text = "日期";
-            this.colDate.Width = 120;
+            this.colDate.Width = 144;
             // 
             // MailList
             // 
@@ -99,6 +99,6 @@ namespace wfemail.form.control
         private System.Windows.Forms.ListView listMail;
         private System.Windows.Forms.ColumnHeader colSub;
         private System.Windows.Forms.ColumnHeader colDate;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel label1;
     }
 }

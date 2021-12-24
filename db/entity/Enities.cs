@@ -6,7 +6,7 @@ namespace wfemail.db.entity
     public class Account
     {
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
-        public int a_id { get; set; }
+        public int? a_id { get; set; }
         public string a_account { get; set; }
         public string a_pass { get; set; }
         public string a_smtp { get; set; }
