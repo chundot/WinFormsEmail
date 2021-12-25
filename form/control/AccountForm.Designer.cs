@@ -142,7 +142,7 @@ namespace wfemail.form.control
             // 
             // numIPort
             // 
-            this.numIPort.Location = new System.Drawing.Point(271, 199);
+            this.numIPort.Location = new System.Drawing.Point(271, 229);
             this.numIPort.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -154,7 +154,7 @@ namespace wfemail.form.control
             // 
             // numSPort
             // 
-            this.numSPort.Location = new System.Drawing.Point(271, 228);
+            this.numSPort.Location = new System.Drawing.Point(271, 200);
             this.numSPort.Maximum = new decimal(new int[] {
             65535,
             0,

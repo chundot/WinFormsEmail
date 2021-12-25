@@ -1,5 +1,4 @@
-﻿using MailKit;
-using MailKit.Net.Imap;
+﻿using MailKit.Net.Imap;
 using MailKit.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -54,14 +53,6 @@ namespace wfemail.util
             return imap.client;
         }
 
-        public static ImapClient newImap(Account account)
-        {
-            ImapClient client = new ImapClient();
-            client.Connect(account.a_imap, account.a_imap_port, SecureSocketOptions.SslOnConnect);
-            client.Authenticate(account.a_account, account.a_pass);
-            return client;
-        }
-
         public static string getDisName(string str)
         {
             switch (str)
@@ -72,6 +63,9 @@ namespace wfemail.util
                 case "Sent Messages":
                     return "已发送";
 
+                case "Sent Mail":
+                    return "已发送";
+
                 case "Junk":
                     return "垃圾箱";
 
@@ -79,6 +73,9 @@ namespace wfemail.util
                     return "草稿";
 
                 case "Deleted Messages":
+                    return "已删除";
+
+                case "Trash":
                     return "已删除";
 
                 default:
@@ -108,15 +105,6 @@ namespace wfemail.util
                 default:
                     return "inbox";
             }
-        }
-
-        public static Task<IList<IMailFolder>> getDir(ImapClient client)
-        {
-            return client.GetFoldersAsync(client.PersonalNamespaces[0]);
-        }
-
-        public static void getMail(ImapClient client, string folder)
-        {
         }
     }
 }

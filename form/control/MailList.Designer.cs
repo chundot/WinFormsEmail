@@ -68,6 +68,7 @@ namespace wfemail.form.control
             this.listMail.TabIndex = 2;
             this.listMail.UseCompatibleStateImageBehavior = false;
             this.listMail.View = System.Windows.Forms.View.Details;
+            this.listMail.DoubleClick += new System.EventHandler(this.listMail_DoubleClick);
             // 
             // colSub
             // 

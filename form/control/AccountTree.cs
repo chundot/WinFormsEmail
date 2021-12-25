@@ -50,11 +50,6 @@ namespace wfemail.form.control
             L("用户邮箱列表");
         }
 
-        // 添加新用户
-        public async Task addAsync()
-        {
-        }
-
         // 邮件相关
         public async Task getDirAsync(Account a, TreeNode node)
         {
@@ -110,12 +105,15 @@ namespace wfemail.form.control
             L("正在打开文件夹...");
             if (!f.IsOpen) await f.OpenAsync(FolderAccess.ReadOnly);
             L("正在读取文件夹里的信息...");
-            var eList = await f.FetchAsync(0, -1, MessageSummaryItems.Envelope);
+            var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope);
+            // 载入到listView
             list.Items.Clear();
-            foreach (var i in eList)
+            for (int index = eList.Count - 1; index >= 0; index--)
             {
+                var i = eList[index];
                 var item = new ListViewItem(i.Envelope.Subject);
                 var date = i.Envelope.Date ?? DateTimeOffset.Now;
+                item.Tag = i;
                 item.SubItems.Add(date.DateTime.ToString());
                 list.Items.Add(item);
             }

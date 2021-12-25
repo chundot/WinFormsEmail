@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using MailKit;
+using System;
 using System.Windows.Forms;
 using wfemail.db.entity;
 using wfemail.form.control;
@@ -9,13 +9,16 @@ namespace wfemail.form
     public partial class MainForm : Form
     {
         private DB db = new DB();
+
         public MainForm()
         {
             InitializeComponent();
             treeAccount.newAccountTabEvent += newAccountTab;
             treeAccount.eventDel += onDel;
             treeAccount.list = listMail.list;
+            listMail.eventOpenMail += newMailViewerTab;
         }
+
         private void closeActiveTab()
         {
             if (tabControl.SelectedIndex != 0)
@@ -25,6 +28,7 @@ namespace wfemail.form
                 tabControl.TabPages.RemoveAt(index);
             }
         }
+
         private void newAccountTab(bool add, Account a)
         {
             var page = new TabPage();
@@ -41,6 +45,7 @@ namespace wfemail.form
                 form.init(a);
             }
         }
+
         private void onSubmit(Account a)
         {
             listMail.L("正在保存...");
@@ -51,6 +56,7 @@ namespace wfemail.form
             closeActiveTab();
             _ = treeAccount.initAsync();
         }
+
         private void onDel(int a_id)
         {
             listMail.L("正在删除...");
@@ -58,14 +64,30 @@ namespace wfemail.form
             listMail.L("删除成功！");
             _ = treeAccount.initAsync();
         }
-        private void newMailViewerTab()
-        {
 
+        private void newMailViewerTab(ListViewItem item)
+        {
+            var viewer = new MailViewer();
+            var page = new TabPage("邮件详情");
+            page.Controls.Add(viewer);
+            viewer.Dock = DockStyle.Fill;
+            tabControl.TabPages.Add(page);
+            tabControl.SelectedIndex++;
+
+            var tag = (MessageSummary)item.Tag;
+            var summary = tag.Folder.GetMessage(tag.UniqueId);
+            if (summary.HtmlBody != null)
+            {
+                viewer.box.DocumentText = summary.HtmlBody;
+            }
+            else if (summary.TextBody != null)
+            {
+                viewer.box.DocumentText = summary.TextBody;
+            }
         }
 
         private void updateList()
         {
-
         }
 
         private void tabControl_DoubleClick(object sender, EventArgs e)

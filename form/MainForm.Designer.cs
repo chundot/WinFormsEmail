@@ -60,8 +60,8 @@ namespace wfemail.form
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl);
             this.splitContainer1.Panel2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 224;
+            this.splitContainer1.Size = new System.Drawing.Size(944, 450);
+            this.splitContainer1.SplitterDistance = 256;
             this.splitContainer1.TabIndex = 0;
             // 
             // treeAccount
@@ -69,7 +69,7 @@ namespace wfemail.form
             this.treeAccount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeAccount.Location = new System.Drawing.Point(3, 3);
             this.treeAccount.Name = "treeAccount";
-            this.treeAccount.Size = new System.Drawing.Size(221, 442);
+            this.treeAccount.Size = new System.Drawing.Size(253, 442);
             this.treeAccount.TabIndex = 0;
             // 
             // tabControl
@@ -80,7 +80,7 @@ namespace wfemail.form
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(572, 450);
+            this.tabControl.Size = new System.Drawing.Size(684, 450);
             this.tabControl.TabIndex = 0;
             this.tabControl.DoubleClick += new System.EventHandler(this.tabControl_DoubleClick);
             // 
@@ -91,7 +91,7 @@ namespace wfemail.form
             this.tabMain.Location = new System.Drawing.Point(4, 26);
             this.tabMain.Margin = new System.Windows.Forms.Padding(0);
             this.tabMain.Name = "tabMain";
-            this.tabMain.Size = new System.Drawing.Size(564, 420);
+            this.tabMain.Size = new System.Drawing.Size(676, 420);
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "邮件列表";
             // 
@@ -101,14 +101,14 @@ namespace wfemail.form
             this.listMail.Location = new System.Drawing.Point(0, 0);
             this.listMail.Margin = new System.Windows.Forms.Padding(0);
             this.listMail.Name = "listMail";
-            this.listMail.Size = new System.Drawing.Size(564, 420);
+            this.listMail.Size = new System.Drawing.Size(676, 420);
             this.listMail.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(944, 450);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";

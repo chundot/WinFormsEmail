@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace wfemail.form
+namespace wfemail.form.control
 {
-    public partial class NewAccountForm : Form
+    public partial class MailSendForm : UserControl
     {
-        public NewAccountForm()
+        public MailSendForm()
         {
             InitializeComponent();
         }
