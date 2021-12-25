@@ -68,7 +68,7 @@ namespace wfemail.form
         private void newMailViewerTab(ListViewItem item)
         {
             var viewer = new MailViewer();
-            var page = new TabPage("邮件详情");
+            var page = new TabPage("邮件详情"); 
             page.Controls.Add(viewer);
             viewer.Dock = DockStyle.Fill;
             tabControl.TabPages.Add(page);

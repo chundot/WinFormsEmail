@@ -29,23 +29,12 @@ namespace wfemail.form.control
         /// </summary>
         private void InitializeComponent()
         {
-            this.richText = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            // 
-            // richText
-            // 
-            this.richText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richText.Location = new System.Drawing.Point(0, 0);
-            this.richText.Name = "richText";
-            this.richText.Size = new System.Drawing.Size(562, 405);
-            this.richText.TabIndex = 0;
-            this.richText.Text = "";
             // 
             // MailSendForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.richText);
             this.Name = "MailSendForm";
             this.Size = new System.Drawing.Size(562, 405);
             this.ResumeLayout(false);
@@ -53,7 +42,5 @@ namespace wfemail.form.control
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox richText;
     }
 }

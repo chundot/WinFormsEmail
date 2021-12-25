@@ -41,8 +41,7 @@ namespace wfemail.form.control
             tree.Nodes.Clear();
             foreach (Account a in aList)
             {
-                TreeNode a_node = new TreeNode(a.a_account, 1, 1);
-                a_node.ImageIndex = 1;
+                TreeNode a_node = new TreeNode(a.a_account, 10, 10);
                 a_node.Name = a.a_id.ToString();
                 a_node.Tag = a;
                 tree.Nodes.Add(a_node);
@@ -78,8 +77,8 @@ namespace wfemail.form.control
                 else
                     node.Nodes.Add(d_node);
             }
-            node.ImageIndex = 2;
-            node.SelectedImageIndex = 2;
+            node.ImageIndex = 11;
+            node.SelectedImageIndex = 11;
             L("文件夹加载完成！");
         }
 

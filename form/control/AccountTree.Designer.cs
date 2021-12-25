@@ -130,6 +130,8 @@ namespace wfemail.form.control
             this.imgList.Images.SetKeyName(7, "draft");
             this.imgList.Images.SetKeyName(8, "sent");
             this.imgList.Images.SetKeyName(9, "inbox");
+            this.imgList.Images.SetKeyName(10, "disk");
+            this.imgList.Images.SetKeyName(11, "diskarr");
             // 
             // AccountTree
             // 
