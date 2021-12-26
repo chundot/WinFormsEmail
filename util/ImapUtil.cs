@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Imap;
+﻿using MailKit;
+using MailKit.Net.Imap;
 using MailKit.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,6 +20,16 @@ namespace wfemail.util
             public ImapState state;
             public int a_id;
             public ImapClient client;
+            // 获得锁
+            public void L() {
+                while (state == ImapState.Waiting) ;
+                state = ImapState.Waiting;
+            }
+            // 释放锁
+            public void F()
+            {
+                state = ImapState.Ready;
+            }
         }
 
         private static List<Imap> imaps = new List<Imap>();
@@ -32,25 +43,28 @@ namespace wfemail.util
             });
             if (imap.client != null)
             {
-                if (imap.client.IsConnected)
-                    return imap.client;
-                else
+                if (!imap.client.IsConnected)
                 {
                     await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
                     await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
-                    return imap.client;
                 }
+                return imap.client;
             }
             // 产生新imap实例
-            imap = new Imap();
-            imap.state = ImapState.Waiting;
             imap.a_id = a.a_id ?? 0;
             imap.client = new ImapClient();
             await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
             await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
-            imap.state = ImapState.Ready;
+            imap.F();
             imaps.Add(imap);
             return imap.client;
+        }
+
+        public static async Task<IList<IMailFolder>> getFolders(Account a)
+        {
+            var imap = await getImap(a);
+            var list = await imap.GetFoldersAsync(imap.PersonalNamespaces[0]);
+            return list;
         }
 
         public static string getDisName(string str)

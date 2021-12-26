@@ -14,10 +14,5 @@ namespace wfemail.form.control
             Controls.Add(box);
         }
 
-        public void cDispose()
-        {
-            box.Dispose();
-            Dispose();
-        }
     }
 }

@@ -33,14 +33,14 @@ namespace wfemail.form.control
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountTree));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.label = new System.Windows.Forms.ToolStripLabel();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.addBtn = new System.Windows.Forms.ToolStripButton();
-            this.editBtn = new System.Windows.Forms.ToolStripButton();
-            this.delBtn = new System.Windows.Forms.ToolStripButton();
             this.tree = new System.Windows.Forms.TreeView();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
+            this.userCtx = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.editUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.delUser = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
-            this.toolStrip2.SuspendLayout();
+            this.userCtx.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -60,60 +60,19 @@ namespace wfemail.form.control
             this.label.Size = new System.Drawing.Size(80, 22);
             this.label.Text = "邮箱账户列表";
             // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addBtn,
-            this.editBtn,
-            this.delBtn});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(197, 25);
-            this.toolStrip2.TabIndex = 2;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // addBtn
-            // 
-            this.addBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.addBtn.Image = ((System.Drawing.Image)(resources.GetObject("addBtn.Image")));
-            this.addBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.addBtn.Name = "addBtn";
-            this.addBtn.Size = new System.Drawing.Size(23, 22);
-            this.addBtn.Text = "添加邮箱账户";
-            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
-            // 
-            // editBtn
-            // 
-            this.editBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.editBtn.Image = ((System.Drawing.Image)(resources.GetObject("editBtn.Image")));
-            this.editBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.editBtn.Name = "editBtn";
-            this.editBtn.Size = new System.Drawing.Size(23, 22);
-            this.editBtn.Text = "编辑账户信息";
-            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
-            // 
-            // delBtn
-            // 
-            this.delBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.delBtn.Image = ((System.Drawing.Image)(resources.GetObject("delBtn.Image")));
-            this.delBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.delBtn.Name = "delBtn";
-            this.delBtn.Size = new System.Drawing.Size(23, 22);
-            this.delBtn.Text = "删除账户";
-            this.delBtn.Click += new System.EventHandler(this.delBtn_Click);
-            // 
             // tree
             // 
             this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tree.ImageIndex = 0;
             this.tree.ImageList = this.imgList;
-            this.tree.Location = new System.Drawing.Point(0, 25);
+            this.tree.Location = new System.Drawing.Point(0, 0);
             this.tree.Name = "tree";
             this.tree.SelectedImageIndex = 0;
-            this.tree.Size = new System.Drawing.Size(197, 271);
+            this.tree.Size = new System.Drawing.Size(197, 296);
             this.tree.TabIndex = 3;
             this.tree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tree_NodeMouseClick);
             this.tree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tree_NodeMouseDoubleClick);
+            this.tree.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tree_MouseUp);
             // 
             // imgList
             // 
@@ -133,19 +92,50 @@ namespace wfemail.form.control
             this.imgList.Images.SetKeyName(10, "disk");
             this.imgList.Images.SetKeyName(11, "diskarr");
             // 
+            // userCtx
+            // 
+            this.userCtx.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addUser,
+            this.editUser,
+            this.delUser});
+            this.userCtx.Name = "userCtx";
+            this.userCtx.Size = new System.Drawing.Size(181, 92);
+            // 
+            // addUser
+            // 
+            this.addUser.Image = global::wfemail.Properties.Resources.userplus;
+            this.addUser.Name = "addUser";
+            this.addUser.Size = new System.Drawing.Size(180, 22);
+            this.addUser.Text = "添加用户";
+            this.addUser.Click += new System.EventHandler(this.addUser_Click);
+            // 
+            // editUser
+            // 
+            this.editUser.Image = global::wfemail.Properties.Resources.userpencil;
+            this.editUser.Name = "editUser";
+            this.editUser.Size = new System.Drawing.Size(180, 22);
+            this.editUser.Text = "编辑用户";
+            this.editUser.Click += new System.EventHandler(this.editUser_Click);
+            // 
+            // delUser
+            // 
+            this.delUser.Image = global::wfemail.Properties.Resources.userminus;
+            this.delUser.Name = "delUser";
+            this.delUser.Size = new System.Drawing.Size(180, 22);
+            this.delUser.Text = "删除用户";
+            this.delUser.Click += new System.EventHandler(this.delUser_Click);
+            // 
             // AccountTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tree);
-            this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
             this.Name = "AccountTree";
             this.Size = new System.Drawing.Size(197, 321);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
+            this.userCtx.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,11 +144,11 @@ namespace wfemail.form.control
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel label;
-        private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton addBtn;
         private System.Windows.Forms.TreeView tree;
         private System.Windows.Forms.ImageList imgList;
-        private System.Windows.Forms.ToolStripButton editBtn;
-        private System.Windows.Forms.ToolStripButton delBtn;
+        private System.Windows.Forms.ContextMenuStrip userCtx;
+        private System.Windows.Forms.ToolStripMenuItem addUser;
+        private System.Windows.Forms.ToolStripMenuItem editUser;
+        private System.Windows.Forms.ToolStripMenuItem delUser;
     }
 }

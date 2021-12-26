@@ -29,11 +29,14 @@ namespace wfemail.form.control
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MailList));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.label1 = new System.Windows.Forms.ToolStripLabel();
             this.listMail = new System.Windows.Forms.ListView();
             this.colSub = new System.Windows.Forms.ColumnHeader();
             this.colDate = new System.Windows.Forms.ColumnHeader();
+            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +68,7 @@ namespace wfemail.form.control
             this.listMail.Margin = new System.Windows.Forms.Padding(0);
             this.listMail.Name = "listMail";
             this.listMail.Size = new System.Drawing.Size(471, 319);
+            this.listMail.SmallImageList = this.imgList;
             this.listMail.TabIndex = 2;
             this.listMail.UseCompatibleStateImageBehavior = false;
             this.listMail.View = System.Windows.Forms.View.Details;
@@ -79,6 +83,14 @@ namespace wfemail.form.control
             // 
             this.colDate.Text = "日期";
             this.colDate.Width = 144;
+            // 
+            // imgList
+            // 
+            this.imgList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imgList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgList.ImageStream")));
+            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgList.Images.SetKeyName(0, "mailunread");
+            this.imgList.Images.SetKeyName(1, "mailread");
             // 
             // MailList
             // 
@@ -101,5 +113,6 @@ namespace wfemail.form.control
         private System.Windows.Forms.ColumnHeader colSub;
         private System.Windows.Forms.ColumnHeader colDate;
         private System.Windows.Forms.ToolStripLabel label1;
+        private System.Windows.Forms.ImageList imgList;
     }
 }
