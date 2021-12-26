@@ -2,6 +2,7 @@
 using MailKit.Net.Imap;
 using MailKit.Security;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using wfemail.db.entity;
 
@@ -9,13 +10,13 @@ namespace wfemail.util
 {
     public class ImapUtil
     {
-        private enum ImapState
+        public enum ImapState
         {
             Ready,
             Waiting
         }
 
-        private struct Imap
+        public struct Imap
         {
             public ImapState state;
             public int a_id;
@@ -33,8 +34,9 @@ namespace wfemail.util
         }
 
         private static List<Imap> imaps = new List<Imap>();
+        private static List<IImapFolder> folders = new List<IImapFolder>();
 
-        public static async Task<ImapClient> getImap(Account a)
+        public static async Task<Imap> getImap(Account a)
         {
             // 对象池寻找
             var imap = imaps.Find((Imap i) =>
@@ -48,7 +50,7 @@ namespace wfemail.util
                     await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
                     await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
                 }
-                return imap.client;
+                return imap;
             }
             // 产生新imap实例
             imap.a_id = a.a_id ?? 0;
@@ -57,14 +59,26 @@ namespace wfemail.util
             await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
             imap.F();
             imaps.Add(imap);
-            return imap.client;
+            return imap;
         }
 
         public static async Task<IList<IMailFolder>> getFolders(Account a)
         {
             var imap = await getImap(a);
-            var list = await imap.GetFoldersAsync(imap.PersonalNamespaces[0]);
+            imap.L();
+            var list = await imap.client.GetFoldersAsync(imap.client.PersonalNamespaces[0]);
+            imap.F();
             return list;
+        }
+
+        public static async Task openFolder(IImapFolder f)
+        {
+            while (folders.Contains(f)) 
+                if (f.IsOpen) return;
+            if (f.IsOpen) return;
+            folders.Add(f);
+            await f.OpenAsync(FolderAccess.ReadWrite);
+            folders.Remove(f);
         }
 
         public static string getDisName(string str)

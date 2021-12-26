@@ -89,7 +89,7 @@ namespace wfemail.form.control
             await ImapUtil.getImap((Account)p.Tag);
             // 打开文件夹
             L("正在打开文件夹...");
-            if (!f.IsOpen) await f.OpenAsync(FolderAccess.ReadWrite);
+            await ImapUtil.openFolder(f);
             L(string.Format("{0} 条邮件, {1} 条最近", f.Count, f.Recent));
         }
 
@@ -98,10 +98,9 @@ namespace wfemail.form.control
             // 检测连接
             var p = node.Parent;
             while (p.Parent != null) p = p.Parent;
-            await ImapUtil.getImap((Account)p.Tag);
             // 添加邮件主题等简略信息到列表
             L("正在打开文件夹...");
-            if (!f.IsOpen) await f.OpenAsync(FolderAccess.ReadWrite);
+            await ImapUtil.openFolder(f);
             L("正在读取文件夹里的信息...");
             var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
             // 载入到listView
