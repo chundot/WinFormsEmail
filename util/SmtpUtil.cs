@@ -11,27 +11,40 @@ namespace wfemail.util
     {
         private static List<Client> clients = new List<Client>();
 
-        private struct Client
+        public struct Client
         {
             public string account;
             public SmtpClient client;
+            public bool locked;
+            public void L()
+            {
+                while (locked) ;
+                locked = true;
+            }
+
+            public void F()
+            {
+                locked = false;
+            }
         }
 
-        public static async Task<SmtpClient> getClient(Account account)
+        public static async Task<Client> getClient(Account account)
         {
             var tmp = clients.Find((Client c) => { return c.account.Equals(account.a_account); });
-            if (tmp.client != null) return tmp.client;
+            if (tmp.client != null) return tmp;
             tmp.account = account.a_account;
             tmp.client = new SmtpClient();
             await tmp.client.ConnectAsync(account.a_smtp, account.a_smtp_port);
             await tmp.client.AuthenticateAsync(account.a_account, account.a_pass);
             clients.Add(tmp);
-            return tmp.client;
+            return tmp;
         }
 
         public static async void sendMail(Account account, MailInfo info)
         {
-            var client = await getClient(account);
+            var sClient = await getClient(account);
+            sClient.L();
+            var client = sClient.client;
             var msg = new MimeMessage();
             msg.From.Add(new MailboxAddress(info.from, info.from));
             msg.To.Add(new MailboxAddress(info.to, info.to));
@@ -40,7 +53,8 @@ namespace wfemail.util
             {
                 Text = info.html
             };
-            client.Send(msg);
+            await client.SendAsync(msg);
+            sClient.F();
         }
     }
 }

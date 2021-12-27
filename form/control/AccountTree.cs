@@ -1,5 +1,4 @@
-﻿using MailKit;
-using MailKit.Net.Imap;
+﻿using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

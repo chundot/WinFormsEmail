@@ -54,6 +54,7 @@ namespace wfemail.form.control
             this.textAccount.Name = "textAccount";
             this.textAccount.Size = new System.Drawing.Size(132, 23);
             this.textAccount.TabIndex = 0;
+            this.textAccount.Leave += new System.EventHandler(this.textAccount_Leave);
             // 
             // textPass
             // 
@@ -89,6 +90,7 @@ namespace wfemail.form.control
             this.checkBoxAuto.TabIndex = 4;
             this.checkBoxAuto.Text = "自动配置";
             this.checkBoxAuto.UseVisualStyleBackColor = true;
+            this.checkBoxAuto.CheckedChanged += new System.EventHandler(this.checkBoxAuto_CheckedChanged);
             // 
             // textImap
             // 

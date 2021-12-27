@@ -9,10 +9,14 @@ namespace wfemail.form.control
         public MailViewer()
         {
             InitializeComponent();
-            box = new WebBrowser();
-            box.Dock = DockStyle.Fill;
-            Controls.Add(box);
+            webInit();
         }
 
+        public void webInit()
+        {
+            box = new WebBrowser();
+            box.Dock = DockStyle.Fill;
+            panel1.Controls.Add(box);
+        }
     }
 }

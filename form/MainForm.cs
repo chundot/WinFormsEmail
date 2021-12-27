@@ -130,6 +130,10 @@ namespace wfemail.form
             // 获取summary
             var summary = await tag.Folder.GetMessageAsync(tag.UniqueId);
             await tag.Folder.SetFlagsAsync(tag.UniqueId, MessageFlags.Seen, true);
+            foreach (var attachment in summary.Attachments)
+            {
+                Debug.WriteLine(attachment.ContentDisposition.FileName);
+            }
             if (summary.HtmlBody != null)
             {
                 viewer.box.DocumentText = summary.HtmlBody;
@@ -151,6 +155,7 @@ namespace wfemail.form
         {
             var aList = await db.acnt.GetListAsync();
             onAccountsLoad(aList);
+            newMailBtn.Enabled = treeAccount.treeView.Nodes.Count != 0;
         }
 
         private void refreshMailList()

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 using wfemail.db.entity;
 
@@ -42,6 +44,27 @@ namespace wfemail.form.control
         {
             textIntoAccount();
             eventSubmit(a);
+        }
+
+        private void checkBoxAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            var res = !checkBoxAuto.Checked;
+            numSPort.Enabled = numIPort.Enabled = textImap.Enabled = textSmtp.Enabled = res;
+        }
+
+        private void textAccount_Leave(object sender, EventArgs e)
+        {
+            var text = textAccount.Text;
+            if (checkBoxAuto.Checked)
+            {
+                if (text.Contains("@"))
+                {
+                    textSmtp.Text = "smtp." + text.Split("@").Last();
+                    textImap.Text = "imap." + text.Split("@").Last();
+                }
+                numIPort.Value = 993;
+                numSPort.Value = 587;
+            }
         }
     }
 }
