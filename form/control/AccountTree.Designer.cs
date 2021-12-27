@@ -39,16 +39,17 @@ namespace wfemail.form.control
             this.addUser = new System.Windows.Forms.ToolStripMenuItem();
             this.editUser = new System.Windows.Forms.ToolStripMenuItem();
             this.delUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.openBoxItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.userCtx.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.label});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 296);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(197, 25);
             this.toolStrip1.TabIndex = 1;
@@ -65,13 +66,14 @@ namespace wfemail.form.control
             this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tree.ImageIndex = 0;
             this.tree.ImageList = this.imgList;
-            this.tree.Location = new System.Drawing.Point(0, 0);
+            this.tree.Location = new System.Drawing.Point(0, 25);
             this.tree.Name = "tree";
             this.tree.SelectedImageIndex = 0;
             this.tree.Size = new System.Drawing.Size(197, 296);
             this.tree.TabIndex = 3;
             this.tree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tree_NodeMouseClick);
             this.tree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tree_NodeMouseDoubleClick);
+            this.tree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tree_MouseDown);
             this.tree.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tree_MouseUp);
             // 
             // imgList
@@ -97,15 +99,17 @@ namespace wfemail.form.control
             this.userCtx.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addUser,
             this.editUser,
-            this.delUser});
+            this.delUser,
+            this.toolStripSeparator1,
+            this.openBoxItem});
             this.userCtx.Name = "userCtx";
-            this.userCtx.Size = new System.Drawing.Size(181, 92);
+            this.userCtx.Size = new System.Drawing.Size(137, 98);
             // 
             // addUser
             // 
             this.addUser.Image = global::wfemail.Properties.Resources.userplus;
             this.addUser.Name = "addUser";
-            this.addUser.Size = new System.Drawing.Size(180, 22);
+            this.addUser.Size = new System.Drawing.Size(136, 22);
             this.addUser.Text = "添加用户";
             this.addUser.Click += new System.EventHandler(this.addUser_Click);
             // 
@@ -113,7 +117,7 @@ namespace wfemail.form.control
             // 
             this.editUser.Image = global::wfemail.Properties.Resources.userpencil;
             this.editUser.Name = "editUser";
-            this.editUser.Size = new System.Drawing.Size(180, 22);
+            this.editUser.Size = new System.Drawing.Size(136, 22);
             this.editUser.Text = "编辑用户";
             this.editUser.Click += new System.EventHandler(this.editUser_Click);
             // 
@@ -121,9 +125,22 @@ namespace wfemail.form.control
             // 
             this.delUser.Image = global::wfemail.Properties.Resources.userminus;
             this.delUser.Name = "delUser";
-            this.delUser.Size = new System.Drawing.Size(180, 22);
+            this.delUser.Size = new System.Drawing.Size(136, 22);
             this.delUser.Text = "删除用户";
             this.delUser.Click += new System.EventHandler(this.delUser_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+            // 
+            // openBoxItem
+            // 
+            this.openBoxItem.Image = global::wfemail.Properties.Resources.folder;
+            this.openBoxItem.Name = "openBoxItem";
+            this.openBoxItem.Size = new System.Drawing.Size(136, 22);
+            this.openBoxItem.Text = "打开文件夹";
+            this.openBoxItem.Click += new System.EventHandler(this.openBoxItem_Click);
             // 
             // AccountTree
             // 
@@ -150,5 +167,7 @@ namespace wfemail.form.control
         private System.Windows.Forms.ToolStripMenuItem addUser;
         private System.Windows.Forms.ToolStripMenuItem editUser;
         private System.Windows.Forms.ToolStripMenuItem delUser;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem openBoxItem;
     }
 }

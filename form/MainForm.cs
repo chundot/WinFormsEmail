@@ -1,6 +1,8 @@
 ﻿using MailKit;
+using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using wfemail.db.entity;
 using wfemail.form.control;
@@ -16,11 +18,13 @@ namespace wfemail.form
         public MainForm()
         {
             InitializeComponent();
-            treeAccount.list = listMail.list;
             treeAccount.onDel += onDel;
             treeAccount.onMod += newAccountTab;
+            treeAccount.eventGetMail += getMailListAsync;
 
             listMail.eventOpenMail += newMailViewerTab;
+            listMail.eventSetMailFlag += setMailFlag;
+            listMail.eventRefresh += refreshMailList;
 
             onAccountsLoad += treeAccount.init;
             reloadAcc();
@@ -75,7 +79,7 @@ namespace wfemail.form
             editor.Dock = DockStyle.Fill;
             page.Controls.Add(editor);
             tabControl.TabPages.Add(page);
-            tabControl.SelectedIndex++;
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
             reloadAcc();
         }
 
@@ -111,18 +115,21 @@ namespace wfemail.form
             closeActiveTab();
         }
 
-        private void newMailViewerTab(ListViewItem item)
+        private async void newMailViewerTab(ListViewItem item)
         {
             var viewer = new MailViewer();
             var page = new TabPage("邮件详情");
             page.Controls.Add(viewer);
             viewer.Dock = DockStyle.Fill;
             tabControl.TabPages.Add(page);
-            tabControl.SelectedIndex++;
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
 
-            var tag = (MessageSummary)item.Tag;
-            var summary = tag.Folder.GetMessage(tag.UniqueId);
-            tag.Folder.SetFlags(tag.UniqueId, MessageFlags.Seen, true);
+            var tag = item.Tag as MessageSummary;
+            // 确保文件夹已打开
+            await ImapUtil.openFolder(tag.Folder);
+            // 获取summary
+            var summary = await tag.Folder.GetMessageAsync(tag.UniqueId);
+            await tag.Folder.SetFlagsAsync(tag.UniqueId, MessageFlags.Seen, true);
             if (summary.HtmlBody != null)
             {
                 viewer.box.DocumentText = summary.HtmlBody;
@@ -133,14 +140,40 @@ namespace wfemail.form
             }
         }
 
+        private async void setMailFlag(ListViewItem item, MessageFlags flag)
+        {
+            var tag = item.Tag as MessageSummary;
+            await ImapUtil.openFolder(tag.Folder);
+            await tag.Folder.SetFlagsAsync(tag.UniqueId, flag, true);
+        }
+
         private async void reloadAcc()
         {
             var aList = await db.acnt.GetListAsync();
             onAccountsLoad(aList);
         }
 
-        private void updateList()
+        private void refreshMailList()
         {
+            var node = treeAccount.treeView.SelectedNode;
+            Debug.WriteLine(node.Tag.GetType());
+            if (node.Tag.GetType() == typeof(ImapFolder))
+            {
+                var tag = node.Tag as IImapFolder;
+                getMailListAsync(tag, node);
+            }
+        }
+
+        private async void getMailListAsync(IImapFolder f, TreeNode node)
+        {
+            ImapUtil.check(node);
+            treeAccount.L("正在打开文件夹...");
+            await ImapUtil.openFolder(f);
+            treeAccount.L("正在读取文件夹里的信息...");
+            var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
+            listMail.updateList(eList);
+            treeAccount.L("读取完成！");
+            tabControl.SelectedIndex = 0;
         }
 
         // 事件绑定
@@ -178,6 +211,12 @@ namespace wfemail.form
 
         private void HelpMenuItem_Click(object sender, EventArgs e)
         {
+        }
+
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new AboutForm();
+            form.Show();
         }
     }
 }

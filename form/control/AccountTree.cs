@@ -11,14 +11,24 @@ namespace wfemail.form.control
 {
     public partial class AccountTree : UserControl
     {
-        public ListView list;
+        public TreeView treeView;
+
         public delegate void del();
+
         public delegate void mod(bool add);
+
+        public delegate void getMail(IImapFolder f, TreeNode node);
+
         public event del onDel;
+
         public event mod onMod;
+
+        public event getMail eventGetMail;
+
         public AccountTree()
         {
             InitializeComponent();
+            treeView = tree;
         }
 
         // 控件本身相关
@@ -53,9 +63,12 @@ namespace wfemail.form.control
         // 邮件相关
         public async void getDirAsync(Account a, TreeNode node)
         {
-            // 产生新的imap实例
+            // 检测连接
+            ImapUtil.check(node);
+            // 加载网页
             L("文件夹加载中...");
             var dList = await ImapUtil.getFolders(a);
+            node.Nodes.Clear();
             foreach (var d in dList)
             {
                 var d_node = new TreeNode();
@@ -84,40 +97,11 @@ namespace wfemail.form.control
         public async Task getDirInfoAsync(IImapFolder f, TreeNode node)
         {
             // 检测连接
-            var p = node.Parent;
-            while (p.Parent != null) p = p.Parent;
-            await ImapUtil.getImap((Account)p.Tag);
+            ImapUtil.check(node);
             // 打开文件夹
             L("正在打开文件夹...");
             await ImapUtil.openFolder(f);
             L(string.Format("{0} 条邮件, {1} 条最近", f.Count, f.Recent));
-        }
-
-        public async void getMailListAsync(IImapFolder f, TreeNode node)
-        {
-            // 检测连接
-            var p = node.Parent;
-            while (p.Parent != null) p = p.Parent;
-            // 添加邮件主题等简略信息到列表
-            L("正在打开文件夹...");
-            await ImapUtil.openFolder(f);
-            L("正在读取文件夹里的信息...");
-            var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
-            // 载入到listView
-            list.Items.Clear();
-            for (int index = eList.Count - 1; index >= 0; index--)
-            {
-                var i = eList[index];
-                var item = new ListViewItem(i.Envelope.Subject);
-                if (i.Flags.Equals(MessageFlags.Seen))
-                    item.ImageIndex = 1;
-                else item.ImageIndex = 0;
-                var date = i.Envelope.Date ?? DateTimeOffset.Now;
-                item.Tag = i;
-                item.SubItems.Add(date.DateTime.ToString());
-                list.Items.Add(item);
-            }
-            L("读取完成！");
         }
 
         // 绑定的事件
@@ -155,15 +139,15 @@ namespace wfemail.form.control
                 {
                     if (node.Nodes.Count == 0)
                     {
-                        var a = (Account)tag;
+                        var a = tag as Account;
                         getDirAsync(a, node);
                     }
                 }
                 // 双击可选择的目录
                 else if (node.Nodes.Count == 0)
                 {
-                    var f = (IImapFolder)tag;
-                    getMailListAsync(f, node);
+                    var f = tag as IImapFolder;
+                    eventGetMail(f, node);
                 }
             }
         }
@@ -172,18 +156,13 @@ namespace wfemail.form.control
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (tree.SelectedNode == null)
-                {
-                    userCtx.Items[1].Enabled = false;
-                    userCtx.Items[2].Enabled = false;
-                    userCtx.Show(MousePosition);
-                }
-                else
-                {
-                    userCtx.Items[1].Enabled = true;
-                    userCtx.Items[2].Enabled = true;
-                    userCtx.Show(MousePosition);
-                }
+                var type = tree.SelectedNode.Tag.GetType();
+                var selAcc = type == typeof(Account);
+                userCtx.Items[1].Visible = selAcc;
+                userCtx.Items[2].Visible = selAcc;
+                userCtx.Items[3].Visible = !selAcc;
+                userCtx.Items[4].Visible = !selAcc;
+                userCtx.Show(MousePosition);
             }
         }
 
@@ -200,6 +179,23 @@ namespace wfemail.form.control
         private void delUser_Click(object sender, EventArgs e)
         {
             onDel();
+        }
+
+        private void openBoxItem_Click(object sender, EventArgs e)
+        {
+            var node = tree.SelectedNode;
+            var f = node.Tag as IImapFolder;
+            eventGetMail(f, node);
+        }
+
+        private void tree_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var node = tree.GetNodeAt(e.Location);
+                if (node != null)
+                    tree.SelectedNode = node;
+            }
         }
     }
 }

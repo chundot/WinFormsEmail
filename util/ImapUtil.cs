@@ -4,6 +4,7 @@ using MailKit.Security;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using wfemail.db.entity;
 
 namespace wfemail.util
@@ -35,6 +36,7 @@ namespace wfemail.util
 
         private static List<Imap> imaps = new List<Imap>();
         private static List<IImapFolder> folders = new List<IImapFolder>();
+        private static List<IMailFolder> m_folders = new List<IMailFolder>();
 
         public static async Task<Imap> getImap(Account a)
         {
@@ -45,11 +47,13 @@ namespace wfemail.util
             });
             if (imap.client != null)
             {
+                imap.L();
                 if (!imap.client.IsConnected)
                 {
                     await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
                     await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
                 }
+                imap.F();
                 return imap;
             }
             // 产生新imap实例
@@ -57,9 +61,17 @@ namespace wfemail.util
             imap.client = new ImapClient();
             await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
             await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
-            imap.F();
             imaps.Add(imap);
+            imap.F();
             return imap;
+        }
+
+        public static async void check(TreeNode node)
+        {
+            // 检测连接
+            var p = node;
+            while (p.Parent != null) p = p.Parent;
+            await getImap((Account)p.Tag);
         }
 
         public static async Task<IList<IMailFolder>> getFolders(Account a)
@@ -73,12 +85,24 @@ namespace wfemail.util
 
         public static async Task openFolder(IImapFolder f)
         {
+            // 给正在打开的文件夹加锁
             while (folders.Contains(f)) 
                 if (f.IsOpen) return;
             if (f.IsOpen) return;
             folders.Add(f);
             await f.OpenAsync(FolderAccess.ReadWrite);
             folders.Remove(f);
+        }
+
+        public static async Task openFolder(IMailFolder f)
+        {
+            // 给正在打开的文件夹加锁
+            while (m_folders.Contains(f))
+                if (f.IsOpen) return;
+            if (f.IsOpen) return;
+            m_folders.Add(f);
+            await f.OpenAsync(FolderAccess.ReadWrite);
+            m_folders.Remove(f);
         }
 
         public static string getDisName(string str)

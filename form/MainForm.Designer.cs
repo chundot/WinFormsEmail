@@ -138,7 +138,7 @@ namespace wfemail.form
             // 
             this.newAccMenuItem.Image = global::wfemail.Properties.Resources.userplus;
             this.newAccMenuItem.Name = "newAccMenuItem";
-            this.newAccMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.newAccMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newAccMenuItem.Text = "新账户";
             this.newAccMenuItem.Click += new System.EventHandler(this.newAccMenuItem_Click);
             // 
@@ -146,7 +146,7 @@ namespace wfemail.form
             // 
             this.editAccMenuItem.Image = global::wfemail.Properties.Resources.userpencil;
             this.editAccMenuItem.Name = "editAccMenuItem";
-            this.editAccMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.editAccMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editAccMenuItem.Text = "编辑账户";
             this.editAccMenuItem.Click += new System.EventHandler(this.editAccMenuItem_Click);
             // 
@@ -154,7 +154,7 @@ namespace wfemail.form
             // 
             this.delAccMenuItem.Image = global::wfemail.Properties.Resources.userminus;
             this.delAccMenuItem.Name = "delAccMenuItem";
-            this.delAccMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.delAccMenuItem.Size = new System.Drawing.Size(180, 22);
             this.delAccMenuItem.Text = "删除账户";
             this.delAccMenuItem.Click += new System.EventHandler(this.delAccMenuItem_Click);
             // 
@@ -169,7 +169,7 @@ namespace wfemail.form
             // 
             // HelpMenuItem
             // 
-            this.HelpMenuItem.Image = global::wfemail.Properties.Resources.question;
+            this.HelpMenuItem.Image = global::wfemail.Properties.Resources.help;
             this.HelpMenuItem.Name = "HelpMenuItem";
             this.HelpMenuItem.Size = new System.Drawing.Size(180, 22);
             this.HelpMenuItem.Text = "帮助";
@@ -177,9 +177,11 @@ namespace wfemail.form
             // 
             // AboutMenuItem
             // 
+            this.AboutMenuItem.Image = global::wfemail.Properties.Resources.about;
             this.AboutMenuItem.Name = "AboutMenuItem";
             this.AboutMenuItem.Size = new System.Drawing.Size(180, 22);
             this.AboutMenuItem.Text = "关于...";
+            this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
             // splitContainer1
             // 
