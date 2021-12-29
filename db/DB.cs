@@ -18,10 +18,10 @@ namespace wfemail
 
         public SqlSugarClient newClient()
         {
-            string db = string.Format("{0}\\.mailc\\mail.db", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+            string db = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\.mailc\\mail.db";
             var client = new SqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = string.Format("Datasource={0}", db),
+                ConnectionString = $"Datasource={db}",
                 DbType = DbType.Sqlite,
                 IsAutoCloseConnection = true
             });

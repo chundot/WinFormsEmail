@@ -27,6 +27,7 @@ namespace wfemail.form
             listMail.eventRefresh += refreshMailList;
 
             onAccountsLoad += treeAccount.init;
+
             reloadAcc();
         }
 
@@ -130,10 +131,8 @@ namespace wfemail.form
             // 获取summary
             var summary = await tag.Folder.GetMessageAsync(tag.UniqueId);
             await tag.Folder.SetFlagsAsync(tag.UniqueId, MessageFlags.Seen, true);
-            foreach (var attachment in summary.Attachments)
-            {
-                Debug.WriteLine(attachment.ContentDisposition.FileName);
-            }
+            // 添加附件
+            viewer.newAttachments(summary.Attachments);
             if (summary.HtmlBody != null)
             {
                 viewer.box.DocumentText = summary.HtmlBody;
@@ -161,12 +160,18 @@ namespace wfemail.form
         private void refreshMailList()
         {
             var node = treeAccount.treeView.SelectedNode;
-            Debug.WriteLine(node.Tag.GetType());
             if (node.Tag.GetType() == typeof(ImapFolder))
             {
                 var tag = node.Tag as IImapFolder;
                 getMailListAsync(tag, node);
             }
+        }
+
+        private void onMessageFlagsChanged(object sender, MessageFlagsChangedEventArgs e)
+        {
+            var f = sender as ImapFolder;
+            Debug.WriteLine("flag is changed!");
+            Debug.WriteLine(e.Index);
         }
 
         private async void getMailListAsync(IImapFolder f, TreeNode node)

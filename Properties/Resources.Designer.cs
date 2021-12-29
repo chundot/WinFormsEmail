@@ -83,6 +83,16 @@ namespace wfemail.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap attachment {
+            get {
+                object obj = ResourceManager.GetObject("attachment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap bold {
             get {
                 object obj = ResourceManager.GetObject("bold", resourceCulture);
@@ -163,6 +173,16 @@ namespace wfemail.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap listrm {
+            get {
+                object obj = ResourceManager.GetObject("listrm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap mailjunk {
             get {
                 object obj = ResourceManager.GetObject("mailjunk", resourceCulture);
@@ -236,6 +256,16 @@ namespace wfemail.Properties {
         internal static System.Drawing.Bitmap shutdown {
             get {
                 object obj = ResourceManager.GetObject("shutdown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap texttemp {
+            get {
+                object obj = ResourceManager.GetObject("texttemp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

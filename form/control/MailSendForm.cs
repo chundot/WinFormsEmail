@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MimeKit;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -124,6 +125,10 @@ namespace wfemail.form.control
             onSendMail(info);
         }
 
+        private void attachBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     public struct MailInfo
     {
@@ -131,5 +136,6 @@ namespace wfemail.form.control
         public string to;
         public string subject;
         public string html;
+        public List<MimeEntity> attachments;
     }
 }

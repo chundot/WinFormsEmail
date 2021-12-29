@@ -48,15 +48,18 @@ namespace wfemail.form.control
         // 载入sqlite中的用户
         public void init(List<Account> aList)
         {
-            tree.Nodes.Clear();
-            foreach (Account a in aList)
+            if (treeView.Nodes.Count == 0 || treeView.Nodes.Count != aList.Count)
             {
-                TreeNode a_node = new TreeNode(a.a_account, 10, 10);
-                a_node.Name = a.a_id.ToString();
-                a_node.Tag = a;
-                tree.Nodes.Add(a_node);
+                tree.Nodes.Clear();
+                foreach (Account a in aList)
+                {
+                    TreeNode a_node = new TreeNode(a.a_account, 10, 10);
+                    a_node.Name = a.a_id.ToString();
+                    a_node.Tag = a;
+                    tree.Nodes.Add(a_node);
+                }
+                L("用户邮箱列表");
             }
-            L("用户邮箱列表");
         }
 
         // 邮件相关
@@ -91,6 +94,7 @@ namespace wfemail.form.control
             node.ImageIndex = 11;
             node.SelectedImageIndex = 11;
             L("文件夹加载完成！");
+
         }
 
         public async Task getDirInfoAsync(IImapFolder f, TreeNode node)
@@ -100,7 +104,7 @@ namespace wfemail.form.control
             // 打开文件夹
             L("正在打开文件夹...");
             await ImapUtil.openFolder(f);
-            L(string.Format("{0} 条邮件, {1} 条最近", f.Count, f.Recent));
+            L($"{f.Count} 条邮件, {f.Recent} 条最近");
         }
 
         // 绑定的事件

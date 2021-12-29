@@ -49,6 +49,8 @@ namespace wfemail.form.control
             this.senderCombo = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.sendBtn = new System.Windows.Forms.Button();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.attachBtn = new System.Windows.Forms.ToolStripButton();
             this.toolText.SuspendLayout();
             this.rePanel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -66,7 +68,9 @@ namespace wfemail.form.control
             this.toolStripSeparator2,
             this.listOrderBtn,
             this.listBtn,
-            this.infoBtn});
+            this.infoBtn,
+            this.toolStripSeparator3,
+            this.attachBtn});
             this.toolText.Location = new System.Drawing.Point(0, 63);
             this.toolText.Name = "toolText";
             this.toolText.Size = new System.Drawing.Size(562, 25);
@@ -251,6 +255,21 @@ namespace wfemail.form.control
             this.sendBtn.UseVisualStyleBackColor = true;
             this.sendBtn.Click += new System.EventHandler(this.sendBtn_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // attachBtn
+            // 
+            this.attachBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.attachBtn.Image = global::wfemail.Properties.Resources.attachment;
+            this.attachBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.attachBtn.Name = "attachBtn";
+            this.attachBtn.Size = new System.Drawing.Size(23, 22);
+            this.attachBtn.Text = "添加附件";
+            this.attachBtn.Click += new System.EventHandler(this.attachBtn_Click);
+            // 
             // MailSendForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -295,5 +314,7 @@ namespace wfemail.form.control
         private System.Windows.Forms.Button sendBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox senderCombo;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton attachBtn;
     }
 }
