@@ -24,6 +24,7 @@ namespace wfemail.form.control
         public MailList()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
             list = listMail;
         }
 
@@ -42,6 +43,16 @@ namespace wfemail.form.control
                 item.SubItems.Add(date.DateTime.ToString());
                 list.Items.Add(item);
             }
+        }
+
+        public void updateItem(MessageFlags flag, int index)
+        {
+            if (flag.Equals(MessageFlags.Seen))
+                list.Items[index].ImageIndex = 1;
+            else if (flag.Equals(MessageFlags.None))
+                list.Items[index].ImageIndex = 0;
+            else
+                list.Items[index].Remove();
         }
 
         private void listMail_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -86,7 +97,7 @@ namespace wfemail.form.control
 
         private void junkItem_Click(object sender, EventArgs e)
         {
-            eventSetMailFlag(listMail.SelectedItems[0], MessageFlags.Deleted);
+            eventSetMailFlag(listMail.SelectedItems[0], MessageFlags.UserDefined);
         }
 
         private void delItem_Click(object sender, EventArgs e)

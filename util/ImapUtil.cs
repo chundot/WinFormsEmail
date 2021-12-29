@@ -153,6 +153,9 @@ namespace wfemail.util
                 case "Deleted Messages":
                     return "deleted";
 
+                case "Trash":
+                    return "deleted";
+
                 default:
                     return "inbox";
             }

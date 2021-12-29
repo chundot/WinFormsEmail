@@ -130,7 +130,7 @@ namespace wfemail.form
             await ImapUtil.openFolder(tag.Folder);
             // 获取summary
             var summary = await tag.Folder.GetMessageAsync(tag.UniqueId);
-            await tag.Folder.SetFlagsAsync(tag.UniqueId, MessageFlags.Seen, true);
+            await tag.Folder.SetFlagsAsync(tag.UniqueId, MessageFlags.Seen, false);
             // 添加附件
             viewer.newAttachments(summary.Attachments);
             if (summary.HtmlBody != null)
@@ -147,7 +147,11 @@ namespace wfemail.form
         {
             var tag = item.Tag as MessageSummary;
             await ImapUtil.openFolder(tag.Folder);
-            await tag.Folder.SetFlagsAsync(tag.UniqueId, flag, true);
+            await tag.Folder.SetFlagsAsync(tag.UniqueId, flag, false);
+            if (flag.Equals(MessageFlags.Deleted))
+                await tag.Folder.MoveToAsync(tag.UniqueId, treeAccount.trash);
+            if (flag.Equals(MessageFlags.UserDefined))
+                await tag.Folder.MoveToAsync(tag.UniqueId, treeAccount.junk);
         }
 
         private async void reloadAcc()
@@ -170,8 +174,7 @@ namespace wfemail.form
         private void onMessageFlagsChanged(object sender, MessageFlagsChangedEventArgs e)
         {
             var f = sender as ImapFolder;
-            Debug.WriteLine("flag is changed!");
-            Debug.WriteLine(e.Index);
+            listMail.updateItem(e.Flags, f.Count - e.Index - 1);
         }
 
         private async void getMailListAsync(IImapFolder f, TreeNode node)
@@ -181,6 +184,8 @@ namespace wfemail.form
             await ImapUtil.openFolder(f);
             treeAccount.L("正在读取文件夹里的信息...");
             var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
+            // 信息改变事件
+            f.MessageFlagsChanged += onMessageFlagsChanged;
             listMail.updateList(eList);
             treeAccount.L("读取完成！");
             tabControl.SelectedIndex = 0;

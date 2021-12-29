@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Imap;
+﻿using MailKit;
+using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace wfemail.form.control
         public event mod onMod;
 
         public event getMail eventGetMail;
+
+        public IMailFolder trash, junk;
 
         public AccountTree()
         {
@@ -90,6 +93,11 @@ namespace wfemail.form.control
                 }
                 else
                     node.Nodes.Add(d_node);
+                // 存储垃圾箱和回收站
+                if (d_node.ImageKey == "deleted")
+                    trash = d;
+                else if (d_node.ImageKey == "junk")
+                    junk = d;
             }
             node.ImageIndex = 11;
             node.SelectedImageIndex = 11;
