@@ -1,5 +1,6 @@
 ﻿using MimeKit;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace wfemail.form.control
@@ -31,7 +32,8 @@ namespace wfemail.form.control
 
         public void newAttachments(IEnumerable<MimeEntity> attachments)
         {
-            toolStrip1.Visible = true;
+            if (attachments.Count() != 0)
+                toolStrip1.Visible = true;
             foreach (var attachment in attachments)
                 newAttachment(attachment);
         }

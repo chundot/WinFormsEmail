@@ -16,6 +16,7 @@ namespace wfemail.util
             public string account;
             public SmtpClient client;
             public bool locked;
+
             public void L()
             {
                 while (locked) ;
@@ -49,10 +50,16 @@ namespace wfemail.util
             msg.From.Add(new MailboxAddress(info.from, info.from));
             msg.To.Add(new MailboxAddress(info.to, info.to));
             msg.Subject = info.subject;
-            msg.Body = new TextPart("html")
+            var multipart = new Multipart("mixed");
+            var body = new TextPart("html")
             {
                 Text = info.html
             };
+            // 追加附件
+            foreach (var attachment in info.attachments)
+                multipart.Add(attachment);
+            multipart.Add(body);
+            msg.Body = multipart;
             await client.SendAsync(msg);
             sClient.F();
         }

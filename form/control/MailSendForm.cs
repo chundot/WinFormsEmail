@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using wfemail.db.entity;
 
@@ -14,6 +15,7 @@ namespace wfemail.form.control
         private HtmlElement div;
         public delegate void sendMail(MailInfo info);
         private event sendMail onSendMail;
+        private List<MimeEntity> list = new List<MimeEntity>();
         public MailSendForm(sendMail fn)
         {
             InitializeComponent();
@@ -122,12 +124,32 @@ namespace wfemail.form.control
             info.from = senderCombo.SelectedItem as string;
             info.subject = subBox.Text;
             info.html = div.InnerHtml;
+            info.attachments = list;
             onSendMail(info);
         }
 
         private void attachBtn_Click(object sender, EventArgs e)
         {
-
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "所有文件|*.*";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    var attachment = new MimePart()
+                    {
+                        Content = new MimeContent(File.OpenRead(ofd.FileName)),
+                        ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                        ContentTransferEncoding = ContentEncoding.Base64,
+                        FileName = Path.GetFileName(ofd.FileName)
+                    };
+                    list.Add(attachment);
+                    // 添加附件栏
+                    var attachPanel = new AttachmentPanel(attachment);
+                    panelMain.Controls.Add(attachPanel);
+                    attachPanel.Dock = DockStyle.Top;
+                    attachPanel.BringToFront();
+                }
+            }
         }
     }
     public struct MailInfo
