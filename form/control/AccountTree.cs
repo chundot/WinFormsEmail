@@ -3,6 +3,7 @@ using MailKit.Net.Imap;
 using MailKit.Security;
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using wfemail.db.entity;
@@ -80,6 +81,12 @@ namespace wfemail.form.control
             {
                 L("获取文件夹失败！");
                 MessageBox.Show("账号或密码错误，无法登录！", "登录失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            catch(SocketException)
+            {
+                L("获取文件夹失败！");
+                MessageBox.Show("无法找到IMAP主机，请检查网络连接和配置信息！", "登录失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
             node.Nodes.Clear();

@@ -19,11 +19,12 @@ namespace wfemail.form
             InitializeComponent();
             treeAccount.onDel += onDel;
             treeAccount.onMod += newAccountTab;
-            treeAccount.eventGetMail += getMailListAsync;
+            treeAccount.eventGetMail += mailListInit;
 
             listMail.eventOpenMail += newMailViewerTab;
             listMail.eventSetMailFlag += setMailFlag;
             listMail.eventRefresh += refreshMailList;
+            listMail.eventGetMailList += getMailList;
 
             onAccountsLoad += treeAccount.init;
 
@@ -166,7 +167,7 @@ namespace wfemail.form
             if (node.Tag.GetType() == typeof(ImapFolder))
             {
                 var tag = node.Tag as IImapFolder;
-                getMailListAsync(tag, node);
+                mailListInit(tag, node);
             }
         }
 
@@ -176,18 +177,32 @@ namespace wfemail.form
             listMail.updateItem(e.Flags, f.Count - e.Index - 1);
         }
 
-        private async void getMailListAsync(IImapFolder f, TreeNode node)
+        private async void mailListInit(IImapFolder f, TreeNode node)
         {
             ImapUtil.check(node);
             treeAccount.L("正在打开文件夹...");
             await ImapUtil.openFolder(f);
-            treeAccount.L("正在读取文件夹里的信息...");
-            var eList = await f.FetchAsync(0, -1, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
             // 信息改变事件
             f.MessageFlagsChanged += onMessageFlagsChanged;
-            listMail.updateList(eList);
-            treeAccount.L("读取完成！");
+
+            listMail.loadNewFolder(f);
+
             tabControl.SelectedIndex = 0;
+        }
+
+        private async void getMailList(IImapFolder f, int curPage, int numPerPage)
+        {
+            try
+            {
+                treeAccount.L("正在读取文件夹里的信息...");
+                var list = await ImapUtil.getMailList(f, curPage, numPerPage);
+                listMail.updateList(list);
+                treeAccount.L("读取完成！");
+            }
+            catch (InvalidOperationException)
+            {
+                treeAccount.L("程序繁忙，请稍等！");
+            }
         }
 
         // 事件绑定

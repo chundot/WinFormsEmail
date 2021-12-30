@@ -1,7 +1,7 @@
 ﻿using MailKit;
 using MailKit.Net.Imap;
-using MailKit.Security;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using wfemail.db.entity;
@@ -43,14 +43,7 @@ namespace wfemail.util
         public static async Task authenticateAsync(Account a, ImapClient client)
         {
             await client.ConnectAsync(a.a_imap, a.a_imap_port);
-            try
-            {
-                await client.AuthenticateAsync(a.a_account, a.a_pass);
-            }
-            catch (AuthenticationException)
-            {
-                throw;
-            }
+            await client.AuthenticateAsync(a.a_account, a.a_pass);
         }
 
         public static async Task<Imap> getImap(Account a)
@@ -122,10 +115,15 @@ namespace wfemail.util
             m_folders.Remove(f);
         }
 
-        public static async Task getMailList(IMailFolder f, int page, int numPerPage)
+        public static async Task<IList<IMessageSummary>> getMailList(IMailFolder f, int page, int numPerPage)
         {
-            int count = f.Count;
-            
+            int count = f.Count - 1;
+            int start = count - page * numPerPage + 1;
+            start = (start < 0) ? 0 : start;
+            int end = count - (page - 1) * numPerPage;
+            var mailList = await f.FetchAsync(start, end, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
+            mailList.Reverse();
+            return mailList;
         }
 
         public static string getDisName(string str)

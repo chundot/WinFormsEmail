@@ -1,4 +1,5 @@
 ﻿using MailKit;
+using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -14,12 +15,21 @@ namespace wfemail.form.control
         public delegate void setMailFlag(ListViewItem item, MessageFlags flag);
 
         public delegate void refresh();
+        public delegate void getMailListByPage(IImapFolder f, int curPage, int numPerPage);
 
         public event viewMail eventOpenMail;
 
         public event setMailFlag eventSetMailFlag;
 
         public event refresh eventRefresh;
+
+        public event getMailListByPage eventGetMailList;
+
+        private IImapFolder curFolder;
+
+        private int maxPage = 1;
+        private int curPage = 1;
+        public int numPerPage = 10;
 
         public MailList()
         {
@@ -30,6 +40,7 @@ namespace wfemail.form.control
 
         public void updateList(IList<IMessageSummary> eList)
         {
+            updatePageLabel();
             list.Items.Clear();
             for (int index = eList.Count - 1; index >= 0; index--)
             {
@@ -55,6 +66,32 @@ namespace wfemail.form.control
                 list.Items[index].Remove();
         }
 
+        public void updatePageLabel()
+        {
+            int count = curFolder.Count;
+            int start = (curPage - 1) * numPerPage + 1;
+            int end = curPage * numPerPage;
+            end = (end > count) ? count : end;
+            toolPageLabel.Text = $"{curPage}/{maxPage}页 {start}-{end}/{count}条";
+        }
+
+        public void loadNewFolder(IImapFolder f)
+        {
+            curFolder = f;
+            maxPage = f.Count / numPerPage;
+            maxPage += ((f.Count % numPerPage) != 0) ? 1 : 0;
+            curPage = 1;
+            pageChanged();
+        }
+
+        public void pageChanged()
+        {
+            if (curPage < 1) curPage = 1;
+            else if (curPage > maxPage) curPage = maxPage;
+            eventGetMailList(curFolder, curPage, numPerPage);
+        }
+
+        // 事件绑定
         private void listMail_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -103,6 +140,34 @@ namespace wfemail.form.control
         private void delItem_Click(object sender, EventArgs e)
         {
             eventSetMailFlag(listMail.SelectedItems[0], MessageFlags.Deleted);
+        }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void firstBtn_Click(object sender, EventArgs e)
+        {
+            curPage = 1;
+            pageChanged();
+        }
+
+        private void lastBtn_Click(object sender, EventArgs e)
+        {
+            curPage = maxPage;
+            pageChanged();
+        }
+
+        private void prevBtn_Click(object sender, EventArgs e)
+        {
+            curPage--;
+            pageChanged();
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            curPage++;
+            pageChanged();
         }
     }
 }
