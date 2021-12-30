@@ -122,7 +122,7 @@ namespace wfemail.util
             int start = count - page * numPerPage + 1;
             start = (start < 0) ? 0 : start;
             int end = count - (page - 1) * numPerPage;
-            var mailList = await f.FetchAsync(start, end, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags);
+            var mailList = await f.FetchAsync(start, end, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags | MessageSummaryItems.InternalDate);
             mailList.Reverse();
             return mailList;
         }

@@ -2,6 +2,7 @@
 using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace wfemail.form.control
@@ -15,6 +16,7 @@ namespace wfemail.form.control
         public delegate void setMailFlag(ListViewItem item, MessageFlags flag);
 
         public delegate void refresh();
+
         public delegate void getMailListByPage(IImapFolder f, int curPage, int numPerPage);
 
         public event viewMail eventOpenMail;
@@ -45,13 +47,15 @@ namespace wfemail.form.control
             for (int index = eList.Count - 1; index >= 0; index--)
             {
                 var i = eList[index];
-                var item = new ListViewItem(i.Envelope.Subject);
+                var item = new ListViewItem(i.Envelope.Subject ?? "(无主题)");
                 if (i.Flags.Equals(MessageFlags.Seen))
                     item.ImageIndex = 1;
                 else item.ImageIndex = 0;
-                var date = i.Envelope.Date ?? DateTimeOffset.Now;
+                string date = "日期未获取";
+                if (i.InternalDate != null)
+                    date = i.InternalDate?.DateTime.ToString();
                 item.Tag = i;
-                item.SubItems.Add(date.DateTime.ToString());
+                item.SubItems.Add(date);
                 list.Items.Add(item);
             }
         }
