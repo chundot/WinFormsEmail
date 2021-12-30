@@ -1,5 +1,6 @@
 ﻿using MailKit;
 using MailKit.Net.Imap;
+using MailKit.Security;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -68,11 +69,19 @@ namespace wfemail.form.control
         // 邮件相关
         public async void getDirAsync(Account a, TreeNode node)
         {
-            // 检测连接
-            ImapUtil.check(node);
             // 加载网页
             L("文件夹加载中...");
-            var dList = await ImapUtil.getFolders(a);
+            IList<IMailFolder> dList;
+            try
+            {
+                dList = await ImapUtil.getFolders(a);
+            }
+            catch(AuthenticationException)
+            {
+                L("获取文件夹失败！");
+                MessageBox.Show("账号或密码错误，无法登录！", "登录失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             node.Nodes.Clear();
             foreach (var d in dList)
             {

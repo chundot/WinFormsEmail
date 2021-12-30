@@ -1,6 +1,5 @@
 ﻿using MimeKit;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -14,7 +13,6 @@ namespace wfemail.form.control
         {
             InitializeComponent();
             this.attachment = attachment;
-            Debug.WriteLine(attachment.ContentType);
             linkLabel1.Text = attachment.ContentDisposition.FileName;
         }
 

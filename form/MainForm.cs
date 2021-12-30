@@ -2,7 +2,6 @@
 using MailKit.Net.Imap;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 using wfemail.db.entity;
 using wfemail.form.control;

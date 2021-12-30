@@ -21,11 +21,14 @@ namespace wfemail.util
             public ImapState state;
             public int a_id;
             public ImapClient client;
+
             // 获得锁
-            public void L() {
+            public void L()
+            {
                 while (state == ImapState.Waiting) ;
                 state = ImapState.Waiting;
             }
+
             // 释放锁
             public void F()
             {
@@ -36,6 +39,19 @@ namespace wfemail.util
         private static List<Imap> imaps = new List<Imap>();
         private static List<IImapFolder> folders = new List<IImapFolder>();
         private static List<IMailFolder> m_folders = new List<IMailFolder>();
+
+        public static async Task authenticateAsync(Account a, ImapClient client)
+        {
+            await client.ConnectAsync(a.a_imap, a.a_imap_port);
+            try
+            {
+                await client.AuthenticateAsync(a.a_account, a.a_pass);
+            }
+            catch (AuthenticationException)
+            {
+                throw;
+            }
+        }
 
         public static async Task<Imap> getImap(Account a)
         {
@@ -48,18 +64,16 @@ namespace wfemail.util
             {
                 imap.L();
                 if (!imap.client.IsConnected)
-                {
-                    await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
-                    await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
-                }
+                    await authenticateAsync(a, imap.client);
                 imap.F();
                 return imap;
             }
             // 产生新imap实例
             imap.a_id = a.a_id ?? 0;
             imap.client = new ImapClient();
-            await imap.client.ConnectAsync(a.a_imap, a.a_imap_port, SecureSocketOptions.SslOnConnect);
-            await imap.client.AuthenticateAsync(a.a_account, a.a_pass);
+            await authenticateAsync(a, imap.client);
+            // 为163准备
+            await imap.client.IdentifyAsync(new ImapImplementation() { Name = "sssssd", Version = "2.0" });
             imaps.Add(imap);
             imap.F();
             return imap;
@@ -76,16 +90,20 @@ namespace wfemail.util
         public static async Task<IList<IMailFolder>> getFolders(Account a)
         {
             var imap = await getImap(a);
-            imap.L();
-            var list = await imap.client.GetFoldersAsync(imap.client.PersonalNamespaces[0]);
-            imap.F();
-            return list;
+            if (imap.client.IsAuthenticated)
+            {
+                imap.L();
+                var list = await imap.client.GetFoldersAsync(imap.client.PersonalNamespaces[0]);
+                imap.F();
+                return list;
+            }
+            return null;
         }
 
         public static async Task openFolder(IImapFolder f)
         {
             // 给正在打开的文件夹加锁
-            while (folders.Contains(f)) 
+            while (folders.Contains(f))
                 if (f.IsOpen) return;
             if (f.IsOpen) return;
             folders.Add(f);
@@ -102,6 +120,12 @@ namespace wfemail.util
             m_folders.Add(f);
             await f.OpenAsync(FolderAccess.ReadWrite);
             m_folders.Remove(f);
+        }
+
+        public static async Task getMailList(IMailFolder f, int page, int numPerPage)
+        {
+            int count = f.Count;
+            
         }
 
         public static string getDisName(string str)
