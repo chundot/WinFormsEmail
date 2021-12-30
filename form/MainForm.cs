@@ -197,7 +197,7 @@ namespace wfemail.form
         private void onMessageFlagsChanged(object sender, MessageFlagsChangedEventArgs e)
         {
             var f = sender as ImapFolder;
-            listMail.updateItem(e.Flags, f.Count - e.Index - 1);
+            listMail.updateItem(e.Flags);
         }
 
         private async void mailListInit(IImapFolder f, TreeNode node)

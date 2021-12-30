@@ -60,8 +60,9 @@ namespace wfemail.form.control
             }
         }
 
-        public void updateItem(MessageFlags flag, int index)
+        public void updateItem(MessageFlags flag)
         {
+            var index = list.SelectedItems[0].Index;
             if (flag.Equals(MessageFlags.Seen))
                 list.Items[index].ImageIndex = 1;
             else if (flag.Equals(MessageFlags.None))

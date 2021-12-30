@@ -256,7 +256,7 @@ namespace wfemail.form
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "手搓邮件客户端 - 中文典藏无敌决定版";
+            this.Text = "手搓邮件客户端 - 中文典藏终极无敌决定版";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
