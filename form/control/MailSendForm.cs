@@ -57,7 +57,6 @@ namespace wfemail.form.control
             doc.ExecCommand("backColor", false, ColorTranslator.ToHtml(color));
         }
 
-
         public void heading(Headings heading)
         {
             doc.ExecCommand("formatBlock", false, $"<{heading}>");
@@ -123,7 +122,7 @@ namespace wfemail.form.control
             info.to = toBox.Text;
             info.from = senderCombo.SelectedItem as string;
             info.subject = subBox.Text;
-            info.html = div.InnerHtml;
+            info.html = htmlBody;
             info.attachments = list;
             onSendMail(info);
         }

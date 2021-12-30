@@ -1,7 +1,10 @@
 ﻿using MailKit;
 using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Windows.Forms;
 using wfemail.db.entity;
 using wfemail.form.control;
@@ -109,11 +112,30 @@ namespace wfemail.form
             reloadAcc();
         }
 
-        private void onSendMail(MailInfo info)
+        private async void onSendMail(MailInfo info)
         {
             var a = db.acnt.GetSingle(it => it.a_account == info.from);
-            SmtpUtil.sendMail(a, info);
-            closeActiveTab();
+            try
+            {
+                await SmtpUtil.sendMail(a, info);
+                closeActiveTab();
+            }
+            catch(InvalidOperationException)
+            {
+                MessageBox.Show("该账户正在发送邮件，请稍等！", "SMTP繁忙", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch(SocketException)
+            {
+                MessageBox.Show("该账户的SMTP服务器配置错误，请检查！", "SMTP错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (SmtpProtocolException)
+            {
+                MessageBox.Show("该账户的SMTP服务器端口配置错误！", "SMTP错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (AuthenticationException)
+            {
+                MessageBox.Show("该账户的账号或密码错误，请检查配置！", "SMTP认证失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private async void newMailViewerTab(ListViewItem item)

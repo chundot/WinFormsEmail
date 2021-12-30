@@ -142,10 +142,6 @@ namespace wfemail.form.control
             eventSetMailFlag(listMail.SelectedItems[0], MessageFlags.Deleted);
         }
 
-        private void toolStripLabel1_Click(object sender, EventArgs e)
-        {
-        }
-
         private void firstBtn_Click(object sender, EventArgs e)
         {
             curPage = 1;

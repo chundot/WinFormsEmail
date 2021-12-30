@@ -1,8 +1,12 @@
-﻿using System;
-using System.Diagnostics;
+﻿using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Windows.Forms;
 using wfemail.db.entity;
+using wfemail.util;
 
 namespace wfemail.form.control
 {
@@ -63,7 +67,40 @@ namespace wfemail.form.control
                     textImap.Text = "imap." + text.Split("@").Last();
                 }
                 numIPort.Value = 993;
-                numSPort.Value = 587;
+                if (text.Contains("163"))
+                    numSPort.Value = 465;
+                else numSPort.Value = 587;
+            }
+        }
+
+        private async void btnTest_Click(object sender, EventArgs e)
+        {
+            textIntoAccount();
+            try
+            {
+                await SmtpUtil.getClient(a);
+                await ImapUtil.getImap(a);
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("请不要频繁测试！", "繁忙", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (SocketException)
+            {
+                MessageBox.Show("无法找到IMAP或SMTP主机，请检查网络连接和配置信息！", "登录失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            catch (SmtpProtocolException)
+            {
+                MessageBox.Show("该账户的SMTP服务器端口或主机名配置错误！", "SMTP错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (ImapProtocolException)
+            {
+                MessageBox.Show("该账户的IMAP服务器端口或主机名配置错误！", "IMAP错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (AuthenticationException)
+            {
+                MessageBox.Show("账号或密码错误，无法登录！", "登录失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

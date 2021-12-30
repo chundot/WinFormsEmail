@@ -84,6 +84,8 @@ namespace wfemail.form.control
             // checkBoxAuto
             // 
             this.checkBoxAuto.AutoSize = true;
+            this.checkBoxAuto.Checked = true;
+            this.checkBoxAuto.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxAuto.Location = new System.Drawing.Point(173, 161);
             this.checkBoxAuto.Name = "checkBoxAuto";
             this.checkBoxAuto.Size = new System.Drawing.Size(75, 21);
@@ -94,6 +96,7 @@ namespace wfemail.form.control
             // 
             // textImap
             // 
+            this.textImap.Enabled = false;
             this.textImap.Location = new System.Drawing.Point(116, 228);
             this.textImap.Name = "textImap";
             this.textImap.Size = new System.Drawing.Size(100, 23);
@@ -101,6 +104,7 @@ namespace wfemail.form.control
             // 
             // textSmtp
             // 
+            this.textSmtp.Enabled = false;
             this.textSmtp.Location = new System.Drawing.Point(116, 199);
             this.textSmtp.Name = "textSmtp";
             this.textSmtp.Size = new System.Drawing.Size(100, 23);
@@ -144,6 +148,7 @@ namespace wfemail.form.control
             // 
             // numIPort
             // 
+            this.numIPort.Enabled = false;
             this.numIPort.Location = new System.Drawing.Point(271, 229);
             this.numIPort.Maximum = new decimal(new int[] {
             65535,
@@ -156,6 +161,7 @@ namespace wfemail.form.control
             // 
             // numSPort
             // 
+            this.numSPort.Enabled = false;
             this.numSPort.Location = new System.Drawing.Point(271, 200);
             this.numSPort.Maximum = new decimal(new int[] {
             65535,
@@ -174,6 +180,7 @@ namespace wfemail.form.control
             this.btnTest.TabIndex = 15;
             this.btnTest.Text = "测试";
             this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btnSubmit
             // 

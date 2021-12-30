@@ -117,6 +117,7 @@ namespace wfemail.util
 
         public static async Task<IList<IMessageSummary>> getMailList(IMailFolder f, int page, int numPerPage)
         {
+            await openFolder(f);
             int count = f.Count - 1;
             int start = count - page * numPerPage + 1;
             start = (start < 0) ? 0 : start;

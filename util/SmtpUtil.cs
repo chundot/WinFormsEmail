@@ -15,18 +15,6 @@ namespace wfemail.util
         {
             public string account;
             public SmtpClient client;
-            public bool locked;
-
-            public void L()
-            {
-                while (locked) ;
-                locked = true;
-            }
-
-            public void F()
-            {
-                locked = false;
-            }
         }
 
         public static async Task<Client> getClient(Account account)
@@ -41,10 +29,9 @@ namespace wfemail.util
             return tmp;
         }
 
-        public static async void sendMail(Account account, MailInfo info)
+        public static async Task sendMail(Account account, MailInfo info)
         {
             var sClient = await getClient(account);
-            sClient.L();
             var client = sClient.client;
             var msg = new MimeMessage();
             msg.From.Add(new MailboxAddress(info.from, info.from));
@@ -61,7 +48,6 @@ namespace wfemail.util
             multipart.Add(body);
             msg.Body = multipart;
             await client.SendAsync(msg);
-            sClient.F();
         }
     }
 }
