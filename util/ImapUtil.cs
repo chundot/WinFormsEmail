@@ -173,10 +173,16 @@ namespace wfemail.util
                 case "Junk":
                     return "junk";
 
+                case "垃圾邮件":
+                    return "junk";
+
                 case "Deleted Messages":
                     return "deleted";
 
                 case "Trash":
+                    return "deleted";
+
+                case "已删除":
                     return "deleted";
 
                 default:

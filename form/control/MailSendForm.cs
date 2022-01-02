@@ -1,8 +1,10 @@
-﻿using MimeKit;
+﻿using MailKit;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using wfemail.db.entity;
 
@@ -21,6 +23,12 @@ namespace wfemail.form.control
             InitializeComponent();
             webInit();
             onSendMail += fn;
+        }
+
+        public void replyInit(Envelope envelope)
+        {
+            toBox.Text = envelope.From.First().Name;
+            subBox.Text = "回复：" + envelope.Subject;
         }
 
         private void webInit()

@@ -103,6 +103,16 @@ namespace wfemail.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap edit_redo {
+            get {
+                object obj = ResourceManager.GetObject("edit-redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap face_angel {
             get {
                 object obj = ResourceManager.GetObject("face-angel", resourceCulture);
@@ -196,6 +206,16 @@ namespace wfemail.Properties {
         internal static System.Drawing.Bitmap listrm {
             get {
                 object obj = ResourceManager.GetObject("listrm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap mail_mark_notjunk {
+            get {
+                object obj = ResourceManager.GetObject("mail-mark-notjunk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

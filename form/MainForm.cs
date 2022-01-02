@@ -68,7 +68,7 @@ namespace wfemail.form
             }
         }
 
-        private void newMailTab()
+        private void newMailTab(string name = "新邮件")
         {
             // 跳转到已有界面
             if (tabControl.TabPages.ContainsKey("newMail"))
@@ -77,7 +77,7 @@ namespace wfemail.form
                 return;
             }
             // 产生新页面
-            var page = new TabPage("新邮件");
+            var page = new TabPage(name);
             page.Name = "newMail";
             var editor = new MailSendForm(onSendMail);
             onAccountsLoad += editor.comboInit;
@@ -88,9 +88,29 @@ namespace wfemail.form
             reloadAcc();
         }
 
+        private void newMailTab(string name, Envelope envelope)
+        {
+            // 回复页面
+            var page = new TabPage(name);
+            page.Name = "newMail";
+            var editor = new MailSendForm(onSendMail);
+            onAccountsLoad += editor.comboInit;
+            editor.Dock = DockStyle.Fill;
+            page.Controls.Add(editor);
+            editor.replyInit(envelope);
+            tabControl.TabPages.Add(page);
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
+            reloadAcc();
+        }
+
         private void onSubmit(Account a)
         {
             treeAccount.L("正在保存...");
+            if (db.acnt.GetList().Find(acc => acc.a_account == a.a_account).a_id != null && a.a_id == null)
+            {
+                MessageBox.Show("用户名已存在！", "保存失败", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             if (a.a_id == null)
                 db.acnt.Insert(a);
             else db.acnt.Update(a);
@@ -164,6 +184,10 @@ namespace wfemail.form
             {
                 viewer.box.DocumentText = summary.TextBody;
             }
+            viewer.item = item;
+            viewer.eventUpdateItem += setMailFlag;
+            viewer.eventCloseTab += closeActiveTab;
+            viewer.eventReplyTo += newMailTab;
         }
 
         private async void setMailFlag(ListViewItem item, MessageFlags flag)

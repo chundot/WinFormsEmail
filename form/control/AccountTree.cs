@@ -118,7 +118,6 @@ namespace wfemail.form.control
             node.ImageIndex = 11;
             node.SelectedImageIndex = 11;
             L("文件夹加载完成！");
-
         }
 
         public async Task getDirInfoAsync(IImapFolder f, TreeNode node)

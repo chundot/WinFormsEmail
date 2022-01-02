@@ -36,6 +36,7 @@ namespace wfemail.form.control
 
         public void textIntoAccount()
         {
+
             a.a_account = textAccount.Text;
             a.a_pass = textPass.Text;
             a.a_smtp = textSmtp.Text;
